@@ -97,7 +97,7 @@ def ask_openrouter(question, context):
     headers = {
         "Authorization": f"Bearer {API_KEY}",
         "Content-Type": "application/json",
-        "HTTP-Referer": "https://yourapp.com",
+        "HTTP-Referer": "https://chatbot-ltin.onrender.com",
         "X-Title": "Movie & Club Chatbot"
     }
 
