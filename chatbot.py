@@ -5,7 +5,7 @@ from firebase_admin import credentials, firestore
 from datetime import datetime
 
 # === CONFIG ===
-API_KEY = "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"
+API_KEY = "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"
 OPENROUTER_MODEL = "meta-llama/llama-3-8b-instruct"
 
 # === FIREBASE INIT ===
