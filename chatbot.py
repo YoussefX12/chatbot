@@ -5,9 +5,8 @@ from firebase_admin import credentials, firestore
 from datetime import datetime
 
 # === CONFIG ===
-API_KEY = os.getenv("OPENROUTER_API_KEY")
-if not API_KEY:
-    raise RuntimeError("Missing OPENROUTER_API_KEY environment variable.")OPENROUTER_MODEL = "meta-llama/llama-3-8b-instruct"
+API_KEY = "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"
+OPENROUTER_MODEL = "meta-llama/llama-3-8b-instruct"
 
 # === FIREBASE INIT ===
 cred = credentials.Certificate("firebase-adminsdk.json")  # Replace with your file path
