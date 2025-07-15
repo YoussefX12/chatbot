@@ -5,7 +5,7 @@ from firebase_admin import credentials, firestore
 from datetime import datetime
 
 # === CONFIG ===
-API_KEY = "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"
+API_KEY = "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"
 OPENROUTER_MODEL = "meta-llama/llama-3-8b-instruct"
 
 # === FIREBASE INIT ===
@@ -95,39 +95,42 @@ def fetch_all_data():
 # === ASK OPENROUTER ===
 def ask_openrouter(question, context):
     headers = {
-        "Authorization": f"Bearer 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",  # ✅ your real key
+        "Authorization": f"Bearer {API_KEY}",
         "Content-Type": "application/json",
-        "HTTP-Referer": "https://chatbot-ltin.onrender.com",  # ✅ must match your deployed Render domain
-        "X-Title": "Movie Club Chatbot"
+        "HTTP-Referer": "https://chatbot-a2lo.onrender.com",
+        "X-Title": "Movie & Club Chatbot"
     }
 
     messages = [
-        {
-            "role": "system",
-            "content": f"You are a helpful chatbot. Use only this data:\n\n{context}"
-        },
-        {
-            "role": "user",
-            "content": question
-        }
-    ]
+    {
+        "role": "system",
+        "content": (
+            "You are Mario, a friendly and helpful assistant specialized in providing detailed and accurate information about movies, clubs, and events. "
+            "You always respond clearly and politely.\n\n"
+            "Your knowledge is strictly limited to the information provided below from the Firebase database. "
+            "You do NOT make up any answers or speculate beyond this data.\n\n"
+            "Besides answering the user's questions, you proactively suggest related questions or useful tips to enhance the user's experience. "
+            "For example, if asked about a movie's screening time, you might also mention the price or genres.\n\n"
+            "If the requested information is missing or unclear, respond with: 'Information not available.'\n\n"
+            "Be engaging, helpful, and concise.\n\n"
+            f"Here is the available data:\n{context}"
+        )
+    },
+    {"role": "user", "content": question}
+]
+
 
     response = requests.post(
         "https://openrouter.ai/api/v1/chat/completions",
         headers=headers,
-        json={
-            "model": "meta-llama/llama-3-8b-instruct",
-            "messages": messages
-        }
+        json={"model": OPENROUTER_MODEL, "messages": messages}
     )
-
-    print(f"Status: {response.status_code}")
-    print(f"Response: {response.text}")
 
     if response.status_code == 200:
         return response.json()["choices"][0]["message"]["content"]
     else:
-        return "OpenRouter error"
+        print(f"Error {response.status_code}: {response.text}")
+        return "Sorry, there was an error."
 
 # === MAIN LOOP ===
 if __name__ == "__main__":
